@@ -1,0 +1,35 @@
+# Continuous Assessment 1
+
+```{r}
+ca1 <- read.csv("CA1.csv")
+matrix_ca1 <- as.matrix(ca1)
+```
+
+------------------------------------------------------------------------
+
+## Question 1
+
+Compute and report the sample mean vectors for each of the five time periods.
+
+```{r}
+mean_matrix <- matrix(nrow=5, ncol=4)
+for(i in 1:5){
+  X <- matrix_ca1[matrix_ca1[,5] == i,]
+  mean_matrix[i,] <- (1/nrow(X))*t(X[,-5])%*%matrix(1,nrow=nrow(X),ncol=1)
+}
+rownames(mean_matrix) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight", "TimePeriod")
+columnnames(mean_matrix) <- c("4000 B.C", "3300 B.C.", "1850 B.C.", " 200 B.C.", " 150 A.D.")
+mean_matrix
+```
+
+## Question 2
+
+Provide a heat map of the correlation matrix for each time period and briefly interpret. Are there any noticeable changes over the time periods?
+
+## Question 3
+
+Calculate the angle between the deviation vectors for $X_1$ and $X_3$ in period 1. Explain why this value is to be expected by referring to the appropriate value from question 2. For a bonus mark, plot all the deviation vectors for period 1 across the first two observations.
+
+## Question 4
+
+Suppose researchers are interested in the quantity $Y_i = 3X_4 − X_1$ for time periods i = 1, . . . ,5. Use your answers from question 1 and an appropriate vector b to determine the sample means $\bar{y_1},..., \bar{y_5}$. Also give the covariance matrix of Y = \[Y1 Y2 Y3 Y4 Y5\]'
