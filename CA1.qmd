@@ -12,19 +12,25 @@ matrix_ca1 <- as.matrix(ca1)
 Compute and report the sample mean vectors for each of the five time periods.
 
 ```{r}
-mean_matrix <- matrix(nrow=5, ncol=4)
+mean_matrix <- matrix(nrow=5, ncol=5)
 for(i in 1:5){
   X <- matrix_ca1[matrix_ca1[,5] == i,]
-  mean_matrix[i,] <- (1/nrow(X))*t(X[,-5])%*%matrix(1,nrow=nrow(X),ncol=1)
+  mean_matrix[i,] <- (1/nrow(X))*t(X)%*%matrix(1,nrow=nrow(X),ncol=1)
 }
-rownames(mean_matrix) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight", "TimePeriod")
-columnnames(mean_matrix) <- c("4000 B.C", "3300 B.C.", "1850 B.C.", " 200 B.C.", " 150 A.D.")
+colnames(mean_matrix) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight", "TimePeriod")
+rownames(mean_matrix) <- c("4000 B.C", "3300 B.C.", "1850 B.C.", " 200 B.C.", " 150 A.D.")
 mean_matrix
 ```
 
 ## Question 2
 
 Provide a heat map of the correlation matrix for each time period and briefly interpret. Are there any noticeable changes over the time periods?
+
+```{r}
+library(ggplot2)
+df <- data.frame(cor(mean_matrix))
+ggplot(df, aes())
+```
 
 ## Question 3
 
