@@ -1,4 +1,4 @@
-CA1 <- read_csv("~/UCT 2025 Honours/Multivariate Analysis/Continuous Assessments/CA1/CA1.csv")
+CA1 <- read.csv("CA1.csv")
 View(CA1)
 
 dat <- as.matrix(CA1)
