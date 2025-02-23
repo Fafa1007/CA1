@@ -1,3 +1,10 @@
+---
+title: "CA1"
+author: "ESNCHR001"
+format: pdf
+editor: visual
+---
+
 # Continuous Assessment 1
 
 ```{r}
@@ -19,8 +26,10 @@ for(i in 1:5){
   X_group <- X_total[X_total[,5] == i,]
   mean_matrix[i,] <- (1/nrow(X_group))*t(X_group)%*%matrix(1,nrow=nrow(X_group),ncol=1)
 }
-colnames(mean_matrix) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight", "TimePeriod")
-rownames(mean_matrix) <- c("4000 B.C", "3300 B.C.", "1850 B.C.", " 200 B.C.", " 150 A.D.")
+colnames(mean_matrix) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight",
+                           "TimePeriod")
+rownames(mean_matrix) <- c("4000 B.C", "3300 B.C.", "1850 B.C.", " 200 B.C.",
+                           " 150 A.D.")
 (mean_matrix <- t(mean_matrix))
 ```
 
@@ -50,26 +59,29 @@ for(i in 1:5){
   
   # Correlation Matrix
   R <- solve(D)^(1/2) %*% S %*% solve(D)^(1/2)
-  rownames(R) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight")
-  colnames(R) <- c("MaxBreadth", "BaseHeight", "BasLength", "NasHeight")
+  rownames(R) <- c("MaxBreadth", "BaseHeight", "BasLength",
+                   "NasHeight")
+  colnames(R) <- c("MaxBreadth", "BaseHeight", "BasLength",
+                   "NasHeight")
   
   # Correlation Heat Map Plot
   print(ggcorrplot(R, lab = TRUE, lab_size = 3) + 
     ggtitle(paste("Correlation Matrix For Time Period:", i)) +
-    theme(plot.title = element_text(hjust = 0.5, size=10), axis.text=element_text(size=8)))
+    theme(plot.title = element_text(hjust = 0.5, size=10), 
+          axis.text=element_text(size=8)))
 }
 
 ```
 
 And briefly interpret the heat map. Are there any noticeable changes over the time periods?
 
-```{r}
-# 1. The correlation between the MaxBreadth and NasHeight went from being positively correlated to each other in time period 1 to gradually becoming uncorrelated to each other by time period 5
+1.  The correlation between the MaxBreadth and NasHeight went from being positively correlated to each other in time period 1 to gradually becoming uncorrelated to each other by time period 5}
 
-# 2. The correlation between BaseHeight and BasLength went from being uncorrelated to each other in time period 1, to slowy become more and more positively correlated to each other by time period 5
+<!-- -->
 
-# 3. The correlation between the MaxBreadth and BaseHeight went from being positively correlated in time period 1 to gradually became less and less uncorrelated by time period 5.
-```
+2.  The correlation between BaseHeight and BasLength went from being uncorrelated to each other in time period 1, to slowy become more and more positively correlated to each other by time period 5
+
+3.  The correlation between the MaxBreadth and BaseHeight went from being positively correlated in time period 1 to gradually became less and less uncorrelated by time period 5.
 
 ------------------------------------------------------------------------
 
@@ -79,7 +91,8 @@ Calculate the angle between the deviation vectors for $X_1$ and $X_3$ in period 
 
 ```{r}
 # Deviation Vectors
-X_center <- scale(X_total[X_total[,5] == 1,], center = T, scale = F) # same as di = xi - x_bar * 1
+X_center <- scale(X_total[X_total[,5] == 1,], center = T, scale = F) 
+# same as di = xi - x_bar * 1
 d1 <- matrix(X_center[,1])
 d2 <- matrix(X_center[,3])
 
@@ -95,7 +108,8 @@ Explain why this value is to be expected by referring to the appropriate value f
 
 ```{r}
 cor(X_total[X_total[,5] == 1,1:4])
-# The correlation between X1 (MaxBreadth) and X3 (BasLength) is 0.01504250 which is the same as finding the cos(angle) between the two deviation vectors
+# The correlation between X1 (MaxBreadth) and X3 (BasLength) is 0.01504250
+# which is the same as finding the cos(angle) between the two deviation vectors
 cos(theta)
 ```
 
@@ -113,7 +127,8 @@ d4 <- matrix(X_center[1:2,4])
 library(ggplot2)
 
 # Base Plot Setup
-plot(0,0, type = "n", xlim=c(-12,5), ylim=c(-8,0), xlab ="X Axis", ylab = "Y Axis", main = "Deviation Vectors") 
+plot(0,0, type = "n", xlim=c(-12,5), ylim=c(-8,0), xlab ="X Axis",
+     ylab = "Y Axis", main = "Deviation Vectors") 
 
 # Add Arrow 
 arrows(0, 0, d1[1], d1[2], col = "blue")
@@ -143,7 +158,8 @@ for(i in 1:5){
   # Yi = 3*X4-X1 so X*b_vector for each time period
   Y[,i] <- (X_total[X_total[,5]==i,]) %*% b
   
-  # E(b'X) = E(b1*x1 + b2*x2 + b3*x3 + b4*x4 + b5*x5) = b1*E(x1) + b2*E(x2) + b3*E(x3) + b4*E(x4) + b5*E(x5)
+  # E(b'X) = E(b1*x1 + b2*x2 + b3*x3 + b4*x4 + b5*x5) 
+  # = b1*E(x1) + b2*E(x2) + b3*E(x3) + b4*E(x4) + b5*E(x5)
   X_bar <- matrix(mean_matrix[,i])
   Y_Expectation[i] <- t(b) %*% X_bar
 }
@@ -155,8 +171,11 @@ print("Sample means yi for time periods i = 1,2,3,4,5:")
 Y_Expectation
 
 # Finding the covariance for Y
-Y_bar <- (1/nrow(Y)) * t(Y) %*% matrix(1, nrow=30, ncol=1) # Same as Y_Expectation (checking)
+Y_bar <- (1/nrow(Y)) * t(Y) %*% matrix(1, nrow=30, ncol=1) 
+# Same as Y_Expectation (checking)
 S <- t(Y) %*% Y- nrow(Y)*Y_bar%*%t(Y_bar)
 S <- S/(nrow(Y)-1)
+print("Covariances Yi for time periods i = 1,2,3,4,5:")
 S
+
 ```
