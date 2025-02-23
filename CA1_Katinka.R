@@ -1,4 +1,5 @@
-CA1 <- read.csv("CA1.csv")
+library(readr)
+CA1 <- read_csv("CA1.csv")
 View(CA1)
 
 dat <- as.matrix(CA1)
@@ -57,19 +58,21 @@ cov_mat <- cov(tp1)
 angle <- acos(cov_mat[1,3] / (sqrt(cov_mat[1,1])*sqrt(cov_mat[3,3])))
 angle # in radians
 
-# The angle is 1.5 radians, which is almost pi/2 (a 90 degree angle). This implies that the vectors are almost orthogonal, meaning that they have nearly no correlation
+# The angle is 1.5 radians, which is almost pi/2 (a 90 degree angle). This implies that the vectors are almost orthogonal, meaning that they have nearly no correlation. In question 2, we see that the correlation between x1 and x3 is 0.015, which is indeed small.
 
 # Question 4
 b <- matrix(c(-1, 0, 0, 3, 0), nrow = 5)
 y_means <- t(b) %*% t(all_means)
 y_means
 
+Y <- matrix(ncol = 5, nrow = 30)
 for (i in 1:5) {
   mat_i <- dat[dat[,5] == i,]
-  cov_i <- cov(mat_i)
-  cov_y <- t(b) %*% cov_i %*% b
-  print(cov_y)
+  y_i <- mat_i %*% b
+  Y[,i] <- y_i
 }
+
+cov(Y)
 
 y_cov <- t(b) %*% cov(all_means) %*% b
 y_cov
